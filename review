@@ -1,0 +1,259 @@
+review.cpp
+***************************************************************
+#include <iostream>
+#include <fstream>
+#include <string>
+#include "function.h"
+
+using namespace std;
+
+int main(){
+string var1;
+
+ifstream myFile;
+ofstream outFile;
+myFile.open("/home/oxo/Desktop/file.txt");
+outFile.open("/home/oxo/Desktop/out.txt");
+
+while(myFile >> var1){
+    cout << var1 << endl;
+}
+outFile << "Result is....." <<endl;
+
+int example=add(10,5);
+
+myFile.close();
+outFile.close();
+return(0);
+}
+
+
+
+
+function.h
+****************************************************************
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
+
+int add(int, int);
+
+#endif
+
+function.cpp
+*****************************************************************************
+#include "function.h"
+
+int add(int a, int b) {
+    return a + b;
+}
+
+Makefile
+***********************************************
+all: my_program
+
+my_program: review.o function.o
+	g++ -o my_program review.o function.o
+
+review.o: review.cpp function.h
+	g++ -c review.cpp -o review.o
+
+function.o: function.cpp function.h
+	g++ -c function.cpp -o function.o
+
+clean:
+	rm -f review.o function.o my_program
+	
+
+REVIEW.C
+************************************************
+#include <stdio.h>
+#define COUNT_TO 100
+#include <string.h>    // needed for strcpy
+#define stringSize 20;
+
+typedef struct planets_t
+{
+	char name [10];
+	double diameter;
+	int moons;
+	double orbit, rotation;
+};
+
+int main (int argc, char *argv[]) {
+   int n=1;
+   float pay=0.0;
+   int size=10;
+   char letters[size];
+  
+  planets_t planet1 = {"Earth", 1000, 1, 1.0, 24.0};
+  strcpy(planet1.name, "Mohammed"); //Puts mohammeed as the name of planet1
+
+  printf ("The planet %s has %d moon(s).\n", planet1.name, planet1.moons);
+
+   int number_emp;
+   n = 1; /* loop initialization */
+       
+   while (n <= COUNT_TO)
+   {
+      printf ("%d ", n);
+      n = n + 1; 
+   }
+
+  printf("Enter number of employees: ");
+  scanf("%d", &number_emp);
+  // %d integers, %f float, %s string or char array, %c character.
+
+  FILE* binaryfile;
+  int i, n, array[10];
+  binaryfile = fopen("values.bin", "w");
+  for  (i = 2; i <= 500; i += 2)
+    fwrite (&i, sizeof(int), 1, binaryfile);
+
+  fclose(binaryfile);
+    //fscanf(in, "%d", &value);   USED IN THIS COURSE
+    //fprintf(out, "%d", value);
+  binaryfile = fopen("values.bin", "r");
+  
+  while (fscanf (birdfile, "%d", &days) != EOF) /* loop goes while there is data */
+  {
+    // Do a bunch of stuff and fscanf again in status to 
+    //get error code or not
+    
+  }
+    fclose(binaryfile);
+
+    int month=2;
+    switch (month)
+   {
+       case 1:
+       case 12:
+                 printf ("That is a long month! \n");
+                 break;
+	
+       case 4:
+       case 11:
+                 printf ("That is a short month! \n");
+                 break;
+        
+       case 2:
+                 printf ("That is a shortest month!! \n");
+                 break;
+       default:
+                 printf ("No such month.\n");
+   }
+
+  int xxx=1;
+  do{
+    xxx++;
+  } while (xxx<100);
+
+    //STRINGS
+    
+    char city[stringSize];
+    printf ("What is the capital of Canada? ");
+	  fgets (city, 20, stdin);
+    city[strlen(city)-1] = '\0';   // we need \0 at end
+    strcpy(city, "Boston"); // This is good too.
+   return (0);
+}
+
+
+Review.CPP
+**********************************************************
+#include <iostream>
+#include <fstream>   // File operations in c++
+using namespace std;
+
+class Restaurant { // Keeps a user's review of a restaurant
+public:
+ ~Restaurant(); // DESTRUCTOR
+ Restaurant();
+
+  void SetName(string restaurantName); // Sets the restaurant's name
+  void SetRating(int userRating); // Sets the rating (1-5, with 5 best)
+  void Print(); // Prints name and rating on one line 
+  void PrintPoint() {
+    std::cout << endl;
+  };
+
+private:
+  string name;
+  int rating;
+  int* subObj;
+};
+Restaurant::~Restaurant(){
+  delete subObj;  // only works if its a pointer
+}
+Restaurant::Restaurant() { //CONSTRUCTOR
+  name="test";
+  rating=5;
+  subObj = new int; // allocate memory for int pointer
+  std::cout << "Default constructor called." << endl;
+  this->PrintPoint();
+}
+void Restaurant::Print(){    // NOT IN CLASS, OUTSIDE
+  std::cout << name << " " << rating << endl;
+}
+void Restaurant::SetRating(int x){
+  rating=x;
+}
+
+void PrintPizzaArea(double pizzaDiameter){
+  double pizzaRadius;
+  pizzaRadius=pizzaDiameter/2.0;
+  std::cout << pizzaRadius << endl;
+}
+
+
+
+int main (){
+  int totalTime;
+  Restaurant myRestaurant;
+  myRestaurant.SetRating(5);
+
+  cout << "Enter total minutes:";
+  cin >> totalTime;
+
+  cout << "Hello, world!";
+  cout << endl;
+  return 0;
+}
+
+
+
+
+
+#include <iostream>
+
+// Base class
+class Shape {
+public:
+    virtual void draw() const{
+        std::cout << "Drawing a shape." << std::endl;
+    }
+private:
+  string itemName;
+  int itemQuantity;
+};
+
+// Derived class
+class Circle : public Shape {
+public:
+    // Override the base class method
+    void draw() const override  {
+        std::cout << "Drawing a circle." << std::endl;
+    }
+};
+
+int main() {
+    // Base class pointer pointing to a derived class object
+    Shape* shapePtr = new Circle();
+
+    // Call the overridden method
+    shapePtr->draw();
+    shapePtr->Shape::draw();
+
+    delete shapePtr; // Don't forget to delete dynamically allocated memory
+
+    return 0;
+}
